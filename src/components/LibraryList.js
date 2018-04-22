@@ -1,11 +1,27 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {View} from 'react-native';
+import {View, ListView} from 'react-native';
+import ListItem from './ListItem';
 
 class LibraryList extends React.Component {
+  UNSAFE_componentWillMount() {
+    // ListView is for rendering a large amount of data, it does lazy loading and creates only the
+    // components that are visible in the screen at that moment, prevents to have all the data in memory
+    // and have only the needed data, it points the created components when scrolling to the data that
+    // will be displayed.
+    const ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2,
+    });
+
+    this.dataSource = ds.cloneWithRows(this.props.libraries);
+  }
+
+  renderRow(library) {
+    return <ListItem item={library} />;
+  }
+
   render() {
-    console.log(this.props);
-    return <View>{JSON.stringify(this.props.libraries)}</View>;
+    return <ListView dataSource={this.dataSource} renderRow={this.renderRow} />;
   }
 }
 
