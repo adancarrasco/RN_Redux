@@ -26,7 +26,9 @@ class LibraryList extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {libraries: state.libraries};
+  return {
+    libraries: state.libraries, // This libraries key comes from the combineReducers in reducers/index.js
+  };
 };
 
 export default connect(mapStateToProps)(LibraryList);
